@@ -250,20 +250,27 @@ class Minesweeper:
                     if checkZ < 0 or checkZ > (self.zSize - 1):
                         validCell = False                    
                     if validCell == True:
-                        self.OpenCell(checkX, checkY, checkZ)
+                        if self.OpenCell(checkX, checkY, checkZ) == -1:
+                            #Guard against recursive operation by just stopping
+                            return -1
 
     #Opens a cell. Note that this only opens it if it is not flagged
     def OpenCell(self, x, y, z):
-        if self.gridObjects[x][y][z] == UNSEEN:
-            if self.gridMines[x][y][z] == MINE:
-                self.HandleLoss(x, y, z)
-            else:
-                self.gridObjects[x][y][z] = SEEN
-                if self.CheckIfWon():
-                    self.HandleWin()
-                    #Open all surrounding cells if there are no mines around it
-                if self.gridMines[x][y][z] == 0:
-                    self.OpenNearbyCells(x, y, z)
+        try:
+            if self.gridObjects[x][y][z] == UNSEEN:
+                if self.gridMines[x][y][z] == MINE:
+                    self.HandleLoss(x, y, z)
+                else:
+                    self.gridObjects[x][y][z] = SEEN
+                    if self.CheckIfWon():
+                        self.HandleWin()
+                        #Open all surrounding cells if there are no mines around it
+                    if self.gridMines[x][y][z] == 0:
+                        if self.OpenNearbyCells(x, y, z) == -1:
+                            return -1
+        except:
+            print("Warning: Recursion depth reached, stopping opening cells")
+            return -1
 
     def CheckIfFullyFlagged(self, x, y, z):
         #If it's a mine or empty we shouldn't need to do this

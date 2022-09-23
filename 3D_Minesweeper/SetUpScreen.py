@@ -65,19 +65,33 @@ class SetUp:
                         if arrow == xUpPos:
                             self.xSize += 1
                         elif arrow == xDownPos:
-                            self.xSize -= 1
+                            if self.xSize > 1:
+                                self.xSize -= 1
+                                #Make sure there can't be more mines that spaces (-1 for the starting space)
+                                if self.noMines > (self.xSize * self.ySize * self.zSize - 1):
+                                    self.noMines = (self.xSize * self.ySize * self.zSize - 1)
                         elif arrow == yUpPos:
                             self.ySize += 1
                         elif arrow == yDownPos:
-                            self.ySize -= 1                        
+                            if self.ySize > 1:
+                                self.ySize -= 1
+                                #Make sure there can't be more mines that spaces (-1 for the starting space)
+                                if self.noMines > (self.xSize * self.ySize * self.zSize - 1):
+                                    self.noMines = (self.xSize * self.ySize * self.zSize - 1)
                         elif arrow == zUpPos:
                             self.zSize += 1
                         elif arrow == zDownPos:
-                            self.zSize -= 1
+                            if self.zSize > 1:
+                                self.zSize -= 1
+                                #Make sure there can't be more mines that spaces (-1 for the starting space)
+                                if self.noMines > (self.xSize * self.ySize * self.zSize - 1):
+                                    self.noMines = (self.xSize * self.ySize * self.zSize - 1)
                         elif arrow == minesUpPos:
-                            self.noMines += 1
+                            if self.noMines < (self.xSize * self.ySize * self.zSize - 1):
+                                self.noMines += 1
                         elif arrow == minesDownPos:
-                            self.noMines -= 1
+                            if self.noMines > 1:
+                                self.noMines -= 1
                 if self.CheckTounching(pos, goButtonPos, self.goButton.get_size()):
                     return (self.xSize, self.ySize, self.zSize, self.noMines)
 
