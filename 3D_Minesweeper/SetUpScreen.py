@@ -7,7 +7,7 @@ arrowUpxPos = 120
 arrowDownxPos = 220
 yAlignment = -20
 
-goButtonPos = (300,300)
+goButtonPos = (300,400)
 
 xUpPos = (arrowUpxPos, 100 + yAlignment)
 xDownPos = (arrowDownxPos, 100 + yAlignment)
@@ -15,8 +15,10 @@ yUpPos = (arrowUpxPos, 200 + yAlignment)
 yDownPos = (arrowDownxPos, 200 + yAlignment)
 zUpPos = (arrowUpxPos, 300 + yAlignment)
 zDownPos = (arrowDownxPos, 300 + yAlignment)
+minesUpPos = (arrowUpxPos, 400 + yAlignment)
+minesDownPos = (arrowDownxPos, 400 + yAlignment)
 
-arrows = {zDownPos, zUpPos, yDownPos, yUpPos, xDownPos, xUpPos}
+arrows = {minesDownPos, minesUpPos, zDownPos, zUpPos, yDownPos, yUpPos, xDownPos, xUpPos}
 
 
 class SetUp:
@@ -24,12 +26,12 @@ class SetUp:
         #Member variables
         self.xSize = 8
         self.ySize = 8
-        self.zSize = 1
+        self.zSize = 5
         self.noMines = 20
         
         #Start pygame
         pygame.init()
-        self.screen = pygame.display.set_mode((400,400))
+        self.screen = pygame.display.set_mode((400,500))
         pygame.display.set_caption("3D Minesweeper")
 
         #Load assets
@@ -72,6 +74,10 @@ class SetUp:
                             self.zSize += 1
                         elif arrow == zDownPos:
                             self.zSize -= 1
+                        elif arrow == minesUpPos:
+                            self.noMines += 1
+                        elif arrow == minesDownPos:
+                            self.noMines -= 1
                 if self.CheckTounching(pos, goButtonPos, self.goButton.get_size()):
                     return (self.xSize, self.ySize, self.zSize, self.noMines)
 
@@ -90,12 +96,15 @@ class SetUp:
             xString = 'Number of rows:    ' + str(self.xSize)
             yString = 'Number of columns: ' + str(self.ySize)
             zString = 'Number of layers:  ' + str(self.zSize)
+            minesString = 'Number of mines:   ' + str(self.noMines)
             xTxt = self.font.render(xString, True, (10,10,10))
             yTxt = self.font.render(yString, True, (10,10,10))
             zTxt = self.font.render(zString, True, (10,10,10))
+            minesTxt = self.font.render(minesString, True, (10,10,10))
             self.screen.blit (xTxt, (50, 50))
             self.screen.blit (yTxt, (50, 150))
             self.screen.blit (zTxt, (50, 250))
+            self.screen.blit (minesTxt, (50, 350))
 
             #Draw the arrows
             for arrow in arrows:
